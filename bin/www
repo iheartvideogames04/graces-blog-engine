@@ -4,13 +4,15 @@
 //module dependencies.
 var TheApp = require("../app/app");
 var theServer = new TheApp.Server();
+var config = require("config");
 var app = theServer.app;
 
 var debug = require("debug")("express:server");
 var http = require("http");
 
 //get port from environment and store in Express.
-var port = normalizePort(process.env.PORT || 3000);
+var expressConfig = config.get("Express");
+var port = expressConfig.port;
 console.log("Port:" + port);
 app.set("port", port);
 
@@ -25,25 +27,6 @@ server.on("error", onError);
 
 //start listening on port
 server.on("listening", onListening);
-
-/**
- * Normalize a port into a number, string, or false.
- */
-function normalizePort(val) {
-    var port = parseInt(val, 10);
-
-    if (isNaN(port)) {
-        // named pipe
-        return val;
-    }
-
-    if (port >= 0) {
-        // port number
-        return port;
-    }
-
-    return false;
-}
 
 /**
  * Event listener for HTTP server "error" event.
